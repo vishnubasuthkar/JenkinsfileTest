@@ -8,7 +8,7 @@ pipeline {
                     if cd /home/ubuntu/jenkins/workspace/workspace/deployment/java_repo1;
                     then git pull;
                     else
-                    git clone https://github.com/Kishoregt1302/java_repo1;
+                    git clone https://github.com/vishnubasuthkar/java_repo1;
                     fi'''
             }
         }
@@ -19,13 +19,21 @@ pipeline {
                     if cd /home/ubuntu/jenkins/workspace/workspace/deployment/java_repo1;
                     then
 					mvn clean install
-					sleep 5
-					cd target/
-					chmod 666 *
-					cp *.war /home/ubuntu/apache-tomcat-9.0.55/webapps
 					else
 					echo 'sdfasdf'
                     fi'''
+					
+            }
+        }
+        stage('deploy') {
+           agent {label 'slave2'}
+            steps {
+                sh '''
+					cd /home/ubuntu/jenkins/workspace/workspace/deployment/java_repo1/target/
+					sudo chmod 666 *
+					cp *.war /home/ubuntu/apache-tomcat-9.0.55/webapps
+					echo 'finished'
+                    '''
 					
             }
         }
